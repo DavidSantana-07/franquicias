@@ -1,5 +1,6 @@
 package com.franchise.franchises.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -19,5 +20,6 @@ public class Franchise {
     private String name;
 
     @OneToMany(mappedBy = "franchise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Branch> branches;
 }

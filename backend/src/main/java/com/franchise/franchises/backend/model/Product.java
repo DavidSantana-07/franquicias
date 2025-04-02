@@ -1,5 +1,6 @@
 package com.franchise.franchises.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Product {
     private int stock;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "branch_id")
+    @JsonBackReference
     private Branch branch;
 }

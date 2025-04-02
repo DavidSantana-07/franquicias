@@ -1,16 +1,21 @@
 package com.franchise.franchises.backend.controller;
 
+import com.franchise.franchises.backend.model.Branch;
 import com.franchise.franchises.backend.model.Franchise;
 import com.franchise.franchises.backend.service.FranchiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
+@SecurityRequirement(name = "BearerAuth")
 @RequestMapping("/api/franchises")
 public class FranchiseController {
 
@@ -46,6 +51,23 @@ public class FranchiseController {
     @GetMapping("/mayor/{id}")
     public ResponseEntity<Franchise> getLargerStockBranchesFranchise (@PathVariable Long id) {
         Optional<Franchise> franchise = franchiseService.getFranchiseById(id);
-        return franchise.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+        if (franchise.isEmpty()) {
+            return ResponseEntity.notFound().build(); // Manejo seguro si la franquicia no existe
+        }
+
+        Franchise originalFranchise = franchise.get();
+        // Filtrar para obtener solo el producto con mayor stock en cada sucursal
+        Optional<Franchise> filteredFranchise = Optional.of(new Franchise(
+                originalFranchise.getId(),
+                originalFranchise.getName(),
+                originalFranchise.getBranches().stream()
+                        .map(branch -> branch.getMaxStockProduct()
+                                .map(product -> new Branch(branch.getId(), branch.getName(), franchise.get(), Collections.singletonList(product))))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toList())
+        ));
+        return filteredFranchise.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
