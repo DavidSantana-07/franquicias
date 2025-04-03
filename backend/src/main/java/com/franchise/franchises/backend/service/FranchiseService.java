@@ -1,5 +1,6 @@
 package com.franchise.franchises.backend.service;
 
+import com.franchise.franchises.backend.model.Branch;
 import com.franchise.franchises.backend.model.Franchise;
 import com.franchise.franchises.backend.repository.FranchiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,10 @@ public class FranchiseService {
     public void deleteFranchise(Long id) {
         franchiseRepository.deleteById(id);
     }
+
+    // Actualiza la franquicia
+    public void save(Franchise franchise) {
+        franchiseRepository.save(franchise);
+    }
+
 }

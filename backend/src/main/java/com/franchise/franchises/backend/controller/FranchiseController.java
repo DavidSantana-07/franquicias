@@ -70,4 +70,19 @@ public class FranchiseController {
         ));
         return filteredFranchise.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    // Actualiza nombre de franquicia
+    @PutMapping("/{id}/update-name")
+    public ResponseEntity<Franchise> updateFranchiseName(@PathVariable Long id, @RequestParam String name) {
+        Optional<Franchise> franchise = franchiseService.getFranchiseById(id);
+        if (franchise.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Franchise updatedFranchise = franchise.get();
+        updatedFranchise.setName(name);
+        franchiseService.save(updatedFranchise);
+
+        return ResponseEntity.ok(updatedFranchise);
+    }
 }
