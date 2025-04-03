@@ -50,4 +50,19 @@ public class ProductController {
     public ResponseEntity<Product> updateStock(@PathVariable Long id, @RequestParam int stock) {
         return new ResponseEntity<>(productService.updateStock(id, stock), HttpStatus.OK);
     }
+
+    // Actualiza nombre de producto
+    @PutMapping("/product/{productId}/update-name")
+    public ResponseEntity<Product> updateProductName(@PathVariable Long productId, @RequestParam String name) {
+        Optional<Product> product = productService.getProductById(productId);
+        if (product.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product updatedProduct = product.get();
+        updatedProduct.setName(name);
+        productService.saveProduct(updatedProduct);
+
+        return ResponseEntity.ok(updatedProduct);
+    }
 }

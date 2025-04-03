@@ -56,4 +56,9 @@ public class ProductService {
         }
     }
 
+    // Actualiza el producto
+    public void saveProduct(Product product) {
+        productRepository.save(product);
+    }
+
 }
