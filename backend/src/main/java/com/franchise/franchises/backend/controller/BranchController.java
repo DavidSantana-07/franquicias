@@ -44,4 +44,19 @@ public class BranchController {
         branchService.deleteBranch(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Actualiza nombre de sucursal
+    @PutMapping("/branch/{branchId}/update-name")
+    public ResponseEntity<Branch> updateBranchName(@PathVariable Long branchId, @RequestParam String name) {
+        Optional<Branch> branch = branchService.getBranchById(branchId);
+        if (branch.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Branch updatedBranch = branch.get();
+        updatedBranch.setName(name);
+        branchService.saveBranch(updatedBranch);
+
+        return ResponseEntity.ok(updatedBranch);
+    }
 }

@@ -44,4 +44,9 @@ public class BranchService {
     public void deleteBranch(Long id) {
         branchRepository.deleteById(id);
     }
+
+    // Actualiza la sucursal
+    public void saveBranch(Branch branch) {
+        branchRepository.save(branch);
+    }
 }
