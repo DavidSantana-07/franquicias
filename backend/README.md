@@ -127,4 +127,9 @@ Asegúrate de tener instalados los siguientes requisitos antes de continuar:
   http://localhost:8080/swagger-ui/index.html
   ```
 
+NOTA IMPORTANTE:
+para generar el token de autentificación
+usuario: admin
+contraseña: 123456
+
 ¡Gracias por usar nuestra aplicación! 🚀
